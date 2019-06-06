@@ -24,6 +24,21 @@ def h_easy():
 
     print('l: {} / p: {}'.format(l, p))
 
+def h_med():
+    global piramid
+
+    valid_lines = get_valid_lines(piramid)
+    l = np.argmax(piramid)
+
+    # se for par
+    if len(valid_lines) & 1:
+        # pega o maior e tira o total -1
+        piramid[l] = 1
+    else:
+        # pega o maior e tira todos os palitos
+        piramid[l] = 0
+
+    print('l: ', l)
 # ---------------------------------------------------- MAIN
 def main():
     global LINHAS
@@ -32,6 +47,8 @@ def main():
     piramid = init_piramid(n=LINHAS)
     print(piramid)
     h_easy()
+    print(piramid)
+    h_med()
     print(piramid)
 
 if __name__ == '__main__':
