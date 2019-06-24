@@ -3,53 +3,51 @@ import numpy as np
 
 # --------------------------------------------------- GLOBAIS
 LINHAS = 5
-piramid = None
+pyramid = None
 # --------------------------------------------------- FUNCS
-def init_piramid(n=4):
+def init_pyramid(n=4):
     return np.arange(1, n+1)
 
-def get_total(piramid):
-    return piramid.sum()
+def get_total(pyramid):
+    return pyramid.sum()
 # --------------------------------------------------- HEURISTICAS
-def h_easy():
-    global piramid
+def h_easy(pyramid):
     
     # pega todos os argumentos nao nulos
-    valid_lines = np.argwhere(piramid > 0)[:,0]
+    valid_lines = np.argwhere(pyramid > 0)[:,0]
     # escolhe um aleatorio
     l = random.choice(valid_lines)
     # remove um valor entre 1 e TOTAL
-    p = random.randint(1, piramid[l])
-    piramid[l] -= p
+    p = random.randint(1, pyramid[l])
+    pyramid[l] -= p
+    
+    return pyramid
 
-    print('l: {} / p: {}'.format(l, p))
-
-def h_med():
-    global piramid
-
-    valid_lines = get_valid_lines(piramid)
-    l = np.argmax(piramid)
+def h_med(pyramid):
+    valid_lines = get_valid_lines(pyramid)
+    l = np.argmax(pyramid)
 
     # se for par
     if len(valid_lines) & 1:
         # pega o maior e tira o total -1
-        piramid[l] = 1
+        pyramid[l] = 1
     else:
         # pega o maior e tira todos os palitos
-        piramid[l] = 0
-
-    print('l: ', l)
+        pyramid[l] = 0
+        
+    return pyramid
+    
 # ---------------------------------------------------- MAIN
 def main():
     global LINHAS
-    global piramid
+    global pyramid
 
-    piramid = init_piramid(n=LINHAS)
-    print(piramid)
-    h_easy()
-    print(piramid)
-    h_med()
-    print(piramid)
+    pyramid = init_pyramid(n=LINHAS)
+    print(pyramid)
+    h_easy(pyramid)
+    print(pyramid)
+    h_med(pyramid)
+    print(pyramid)
 
 if __name__ == '__main__':
     main()
