@@ -4,6 +4,15 @@ import numpy as np
 # --------------------------------------------------- GLOBAIS
 LINHAS = 5
 pyramid = None
+
+plays = {
+    str([0, 2, 3]) : [0, 2, 2],
+    str([1, 1, 3]) : [1, 1, 1],
+    str([1, 0, 3]) : [1, 0, 0],
+    str([1, 2, 2]) : [0, 2, 2],
+    str([1, 2, 1]) : [1, 1, 1],
+    str([1, 2, 0]) : [1, 0, 0]
+}
 # --------------------------------------------------- FUNCS
 def init_pyramid(n=4):
     return np.arange(1, n+1)
@@ -39,6 +48,20 @@ def h_med(pyramid):
         pyramid[l] = 0
         
     return pyramid
+
+def h_hard(pyramid):
+    global plays
+    valid_lines = get_valid_lines(pyramid)
+
+    if len(valid_lines) > 3:
+        return h_med(pyramid)
+    else:
+        play_key = str(list(pyramid[:3]))
+        if play_key in plays.keys():
+            pyramid[:3] = plays[play_key]
+            return pyramid
+        else:
+            return h_easy(pyramid)
     
 # ---------------------------------------------------- MAIN
 def main():
@@ -46,11 +69,20 @@ def main():
     global pyramid
 
     pyramid = init_pyramid(n=LINHAS)
-    print(pyramid)
-    h_easy(pyramid)
-    print(pyramid)
-    h_med(pyramid)
-    print(pyramid)
+
+    print("Inicio de jogo!")
+    while get_total(pyramid) > 1:
+        print("\nTabuleiro: " + str(pyramid))
+        linha = int(input("Linha: "))
+        valor = int(input("Valor: "))
+        pyramid[linha] -= valor
+
+
+        print("Tabuleiro: " + str(pyramid))
+        print("Vez da IA!")
+        h_hard(pyramid)
+
+    print("Fim de jogo!")
 
 if __name__ == '__main__':
     main()
